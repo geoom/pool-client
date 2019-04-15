@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom';
 
 import Home from '../Home';
+import Signin from '../Signin';
+import Signup from '../Signup';
 import NotFound from '../../components/NotFound';
 
 class App extends Component {
@@ -16,6 +18,8 @@ class App extends Component {
                 <div>
                     <Switch>
                         <Route path="/" component={Home} />
+                        <Route path="/signin" component={Signin} />
+                        <Route path="/signup" component={Signup} />
                         <Route component={NotFound} />
                     </Switch>
                 </div>
