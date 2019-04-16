@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { css, StyleSheet } from 'aphrodite';
 
 const styles = StyleSheet.create({
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   
 const Navbar = () =>
     <nav className={css(styles.navbar)}>
-        <Link to="/" className={css(styles.link)}>PoolClient</Link>
+        <Link to="/" className={css(styles.link)}>Pool Client</Link>
     </nav>;
 
 export default Navbar;

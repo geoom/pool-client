@@ -6,11 +6,11 @@ function setCurrentUser(dispatch, response) {
     dispatch({ type: 'AUTHENTICATION_SUCCESS', response });
 }
 
-export function login(data, router) {
+export function signin(data, router) {
     return dispatch => api.post('/sessions', data)
       .then((response) => {
         setCurrentUser(dispatch, response);
-        dispatch(reset('login'));
+        dispatch(reset('signin'));
         router.transitionTo('/');
     });
 }
@@ -24,7 +24,7 @@ export function signup(data, router) {
     });
 }
 
-export function logout(router) {
+export function signout(router) {
     return dispatch => api.delete('/sessions')
       .then(() => {
         localStorage.removeItem('token');

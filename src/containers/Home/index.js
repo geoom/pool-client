@@ -1,8 +1,8 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import { logout } from '../../actions/session';
+import { Link } from 'react-router-dom';
+import { signout } from '../../actions/session';
 import Navbar from '../../components/Navbar';
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
 }
 
 class Home extends Component {
+    
     static contextTypes = {
         router: PropTypes.object,
     }
@@ -27,15 +28,15 @@ class Home extends Component {
             <div style={{ flex: '1' }}>
                 <Navbar />
                 <ul>
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/signup">Signup</Link></li>
+                    <li><Link to="/signin">Sign in</Link></li>
+                    <li><Link to="/signup">Sign up</Link></li>
                 </ul>
                 {   isAuthenticated &&
                     <div>
                         <span>{currentUser.username}</span>
                         <button type="button" onClick={this.handleLogout}>Logout</button>
                     </div>
-                }
+                } 
             </div>
         );
     }
@@ -46,5 +47,5 @@ export default connect(
       isAuthenticated: state.session.isAuthenticated,
       currentUser: state.session.currentUser,
     }),
-    { logout }
+    { signout }
 )(Home);

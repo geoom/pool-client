@@ -1,6 +1,7 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { signin } from '../../actions/session';
 import SigninForm from '../../components/SigninForm';
 import Navbar from '../../components/Navbar';
 
