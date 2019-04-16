@@ -8,27 +8,38 @@ function setCurrentUser(dispatch, response) {
 
 export function signin(data, router) {
     return dispatch => api.post('/sessions', data)
-      .then((response) => {
-        setCurrentUser(dispatch, response);
-        dispatch(reset('signin'));
-        router.transitionTo('/');
-    });
+        .then((response) => {
+            setCurrentUser(dispatch, response);
+            dispatch(reset('signin'));
+            router.transitionTo('/');
+        });
 }
 
 export function signup(data, router) {
     return dispatch => api.post('/users', data)
-      .then((response) => {
-        setCurrentUser(dispatch, response);
-        dispatch(reset('signup'));
-        router.transitionTo('/');
-    });
+        .then((response) => {
+            setCurrentUser(dispatch, response);
+            dispatch(reset('signup'));
+            router.transitionTo('/');
+        });
 }
 
 export function signout(router) {
     return dispatch => api.delete('/sessions')
-      .then(() => {
-        localStorage.removeItem('token');
-        dispatch({ type: 'LOGOUT' });
-        router.transitionTo('/signin');
-    });
+        .then(() => {
+            localStorage.removeItem('token');
+            dispatch({ type: 'LOGOUT' });
+            router.transitionTo('/signin');
+        });
+}
+
+export function authenticate(){
+    return dispatch => api.post('/sessions/refresh')
+        .then((response) => {
+            setCurrentUser(dispatch, response);
+        })
+        .catch(() => {
+            localStorage.removeItem('token');
+            window.location = '/login';
+        });
 }

@@ -11,7 +11,24 @@ import Signin from '../Signin';
 import Signup from '../Signup';
 import NotFound from '../../components/NotFound';
 
+import { authenticate } from '../../actions/session';
+
+type Props = {
+    authenticate: () => void,
+}
+
 class App extends Component {
+
+    componentDidMount() {
+        const token = localStorage.getItem('token');
+    
+        if (token) {
+          this.props.authenticate();
+        }
+    }
+
+    props: Props
+
     render(){
         return (
             <Router>
@@ -28,4 +45,7 @@ class App extends Component {
     }
 }
 
-export default App;
+export default connect(
+    null,
+    { authenticate }
+)(App);
