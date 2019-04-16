@@ -5,6 +5,7 @@ import {
     Route, 
     Switch 
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Home from '../Home';
 import Signin from '../Signin';
