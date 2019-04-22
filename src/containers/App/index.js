@@ -13,14 +13,18 @@ import Signup from '../Signup';
 import NotFound from '../../components/NotFound';
 import MatchAuthenticated from '../../components/MatchAuthenticated';
 import RedirectAuthenticated from '../../components/RedirectAuthenticated';
+import Sidebar from '../../components/Sidebar';
+import Room from '../Room';
 
-import { authenticate, unauthenticate } from '../../actions/session';
+import { authenticate, unauthenticate, signout } from '../../actions/session';
 
 type Props = {
     authenticate: () => void,
     unauthenticate: () => void,
     isAuthenticated: boolean,
     willAuthenticate: boolean,
+    signout: () => void,
+    currentUserRooms: Array,
 }
 
 class App extends Component {
@@ -37,20 +41,33 @@ class App extends Component {
 
     props: Props
 
+    handleSignout = router => this.props.signout(router);
+
     render(){
         const { isAuthenticated, willAuthenticate } = this.props;
         const authProps = { isAuthenticated, willAuthenticate };
 
         return (
             <Router>
-                <div style={{ display: 'flex', flex: '1' }}>
-                    <Switch>
-                        <MatchAuthenticated exactly pattern="/" component={Home} {...authProps} />
-                        <RedirectAuthenticated pattern="/signin" component={Signin} {...authProps} />
-                        <RedirectAuthenticated pattern="/signup" component={Signup} {...authProps} />
-                        <Route component={NotFound} />
-                    </Switch>
-                </div>
+                {({router}) => (
+                    <div style={{ display: 'flex', flex: '1' }}>
+                        {
+                            isAuthenticated &&
+                            <Sidebar 
+                                router={router}
+                                rooms={currentUserRooms}
+                                onSignoutClick={this.handleSignout}
+                            />
+                        }
+                        <Switch>
+                            <MatchAuthenticated exactly pattern="/" component={Home} {...authProps} />
+                            <RedirectAuthenticated pattern="/signin" component={Signin} {...authProps} />
+                            <RedirectAuthenticated pattern="/signup" component={Signup} {...authProps} />
+                            <MatchAuthenticated exactly pattern="/r/:id" component={Room} {...authProps} />
+                            <Route component={NotFound} />
+                        </Switch>
+                    </div>
+                )}
             </Router>
         )
     }
@@ -60,6 +77,7 @@ export default connect(
     state => ({
         isAuthenticated: state.session.isAuthenticated,
         willAuthenticate: state.session.willAuthenticate,
+        currentUserRooms: state.rooms.currentUserRooms,
     }),
-    { authenticate, unauthenticate }
+    { authenticate, unauthenticate, signout }
 )(App);
